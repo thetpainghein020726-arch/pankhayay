@@ -1,392 +1,294 @@
-```html
 <!DOCTYPE html>
-<html lang="my">
+<html lang="my" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pan Kha Yay (ပန်းခရေ အထည်ဆိုင်) - Fashion & Apparel Store</title>
-    <!-- Tailwind CSS -->
+    <title>မြန်မာ AI လက်ထောက် Pro - Full Ultimate App</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React & React DOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <!-- Babel for JSX -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- FontAwesome Icons -->
+    <!-- FontAwesome Icons CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Myanmar Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * {
-            font-family: 'Padauk', 'Poppins', sans-serif;
+    <!-- Google Fonts for Myanmar Text (Padauk) and English (Plus Jakarta Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Marked.js for Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        myanmar: {
+                            gold: '#D4AF37',
+                            ruby: '#E0115F',
+                            jade: '#00A86B',
+                            royal: '#1E3A8A',
+                            darkbg: '#0B0F19',
+                            darkcard: '#151D2A',
+                            darkborder: '#2A364F'
+                        }
+                    },
+                    fontFamily: {
+                        padauk: ['Padauk', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'Padauk', 'sans-serif']
+                    }
+                }
+            }
         }
-        .custom-scrollbar::-webkit-scrollbar {
+    </script>
+    <style>
+        body {
+            font-family: 'Padauk', 'Plus Jakarta Sans', sans-serif;
+        }
+        ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        ::-webkit-scrollbar-track {
+            background: transparent;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
+        ::-webkit-scrollbar-thumb {
+            background: #64748b;
+            border-radius: 9999px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 0.4; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .search-pulse {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+        .glow-effect {
+            box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.25);
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
-    <div id="root"></div>
+<body class="bg-slate-100 dark:bg-myanmar-darkbg text-slate-800 dark:text-slate-100 h-full flex flex-col transition-colors duration-200">
 
-    <script type="text/babel">
-        const ALL_CATEGORIES = [
-            "All", 
-            "ပုဆိုး (Pasoe / Longyi)", 
-            "ထဘီ (Htamein / Longyi)", 
-            "ပိတ်စ (Fabrics)", 
-            "အနွေးထည် (Sweaters)",
-            "မိုးကာ (Raincoats)",
-            "ထီး (Umbrellas)",
-            "ဖိနပ် (Shoes)",
-            "ဂါဝန် (Dresses)", 
-            "အင်္ကျီ (Shirts)", 
-            "ဘောင်းဘီ (Jeans)", 
-            "စကတ် (Skirts)"
-        ];
+    <!-- Navigation Header -->
+    <header class="border-b border-slate-200 dark:border-myanmar-darkborder bg-white/90 dark:bg-myanmar-darkcard/90 backdrop-blur-md sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Logo & Brand -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 via-emerald-500 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-amber-500/20">
+                    <i class="fa-solid font-bold text-lg fa-brain animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-base sm:text-lg text-slate-900 dark:text-white flex items-center gap-1.5">
+                        မြန်မာ AI <span class="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/30 font-sans font-semibold">Pro Ultimate</span>
+                    </h1>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">Memory + Live Search + Image Gen + Video + Global IP Bypass</p>
+                </div>
+            </div>
 
-        const defaultProducts = [
-            {
-                id: "P-101",
-                code: "DR-001",
-                name: "ကိုရီးယားစတိုင် နွေရာသီ ပွဲတက်ဂါဝန်",
-                category: "ဂါဝန် (Dresses)",
-                price: 28000,
-                costPrice: 20000,
-                stock: 15,
-                sizes: ["S", "M", "L"],
-                colors: ["ပန်းရောင်", "အဖြူရောင်"],
-                image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=500&auto=format&fit=crop&q=60",
-                description: "အသားအေးပြီး ဝတ်ရတာ ပေါ့ပါးလန်းဆန်းစေသော ကိုရီးယားဒီဇိုင်းဆန်း ဂါဝန်ဖြစ်ပါသည်။"
-            },
-            {
-                id: "P-102",
-                code: "PS-001",
-                name: "အမရပူရ အကွက်ဆန်း ပိုးချည်ယှက် ပုဆိုး",
-                category: "ပုဆိုး (Pasoe / Longyi)",
-                price: 22000,
-                costPrice: 15000,
-                stock: 18,
-                sizes: ["Free Size"],
-                colors: ["အနက်အကွက်", "အညိုရောင်", "အပြာ"],
-                image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=500&auto=format&fit=crop&q=60",
-                description: "အဆင့်မြင့် ပိုးချည်ယှက်ဖြင့် ယက်လုပ်ထားပြီး မင်္ဂလာဆောင်နှင့် ပွဲတက်ဝတ်ဆင်ရန် သင့်တော်ပါသည်။"
-            },
-            {
-                id: "P-103",
-                code: "HT-001",
-                name: "ရိုးရာ အကွက်ဆန်း ကွင်းချုပ် ထဘီ (အဆင်ပါ)",
-                category: "ထဘီ (Htamein / Longyi)",
-                price: 25000,
-                costPrice: 17500,
-                stock: 12,
-                sizes: ["Free Size", "L"],
-                colors: ["အစိမ်းရင့်", "ပန်းရောင်နု", "ရွှေဝါရောင်"],
-                image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=500&auto=format&fit=crop&q=60",
-                description: "အသားအေး ရိုးရာအဆင် လှပစွာ ယက်လုပ်ထားသော အမျိုးသမီး ကွင်းချုပ် ထဘီ ဖြစ်ပါသည်။"
-            },
-            {
-                id: "P-104",
-                code: "FB-001",
-                name: "အဆင့်မြင့် ပါတိတ် ပိတ်စ (ဝတ်စုံစာ / ၂ ကိုင်း)",
-                category: "ပိတ်စ (Fabrics)",
-                price: 19500,
-                costPrice: 13000,
-                stock: 30,
-                sizes: ["၂ ကိုင်းစာ (၄ ကိုက်)"],
-                colors: ["ခရမ်းရောင်", "စိမ်းပြာရောင်"],
-                image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=500&auto=format&fit=crop&q=60",
-                description: "အကျီနှင့် ထဘီ ဝမ်းဆက် ချုပ်လုပ်နိုင်သော အသားကောင်း ပါတိတ် ပိတ်စ ဖြစ်ပါသည်။"
-            },
-            {
-                id: "P-105",
-                code: "SW-001",
-                name: "အနွေးထည် ခေါင်းစွပ် ဆွယ်တာ (Knitted Sweater)",
-                category: "အနွေးထည် (Sweaters)",
-                price: 32000,
-                costPrice: 22000,
-                stock: 10,
-                sizes: ["M", "L", "XL"],
-                colors: ["ခရင်မ်ရောင်", "အညိုရောင်"],
-                image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=500&auto=format&fit=crop&q=60",
-                description: "ဆောင်းရာသီတွင် ဝတ်ဆင်ရန် နွေးထွေးပြီး အသားအေးမြအိစက်သော အဆင့်မြင့် ဆွယ်တာ ဖြစ်ပါသည်။"
-            },
-            {
-                id: "P-106",
-                code: "RC-001",
-                name: "နှစ်ထပ် ရေစိုခံ ခေါင်းစွပ် မိုးကာအင်္ကျီ",
-                category: "မိုးကာ (Raincoats)",
-                price: 18500,
-                costPrice: 12500,
-                stock: 25,
-                sizes: ["Free Size"],
-                colors: ["အပြာရင့်", "အနက်ရောင်"],
-                image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=60",
-                description: "မိုးရာသီ ရေမစိုစေရန် Water-proof နည်းပညာဖြင့် ပြုလုပ်ထားသော ခိုင်ခန့်သည့် မိုးကာအင်္ကျီ ဖြစ်ပါသည်။"
-            },
-            {
-                id: "P-107",
-                code: "UM-001",
-                name: "UV ကာကွယ် အလိုအလျောက် ပွင့် ခေါက်ထီး",
-                category: "ထီး (Umbrellas)",
-                price: 12500,
-                costPrice: 8000,
-                stock: 40,
-                sizes: ["Standard"],
-                colors: ["အနက်ရောင်", "ခရမ်းရင့်"],
-                image: "https://images.unsplash.com/photo-1534353436294-0dbd4bdac845?w=500&auto=format&fit=crop&q=60",
-                description: "နေပူ မိုးရွာ မည်သည့်ရာသီမဆို သယ်ဆောင်ရလွယ်ကူပြီး UV ကာကွယ်ပေးနိုင်သော ခေါက်ထီး ဖြစ်ပါသည်။"
-            },
-            {
-                id: "P-108",
-                code: "SH-101",
-                name: "အမျိုးသမီး ပေါ့ပါး သားရေ ဖိနပ် (Casual Shoes)",
-                category: "ဖိနပ် (Shoes)",
-                price: 21000,
-                costPrice: 14000,
-                stock: 15,
-                sizes: ["37", "38", "39", "40"],
-                colors: ["အဖြူရောင်", "နို့နှစ်ရောင်"],
-                image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&auto=format&fit=crop&q=60",
-                description: "စီးရတာ ပေါ့ပါးပြီး လမ်းလျှောက်ရတာ သက်သောင့်သက်သာရှိစေသော ဖက်ရှင်စီး ဖိနပ် ဖြစ်ပါသည်။"
-            }
-        ];
+            <!-- Controls & Action Buttons -->
+            <div class="flex items-center space-x-1.5 sm:space-x-2">
+                <!-- Global IP Bypass Switch -->
+                <button id="toggleIpBypassBtn" onclick="toggleGlobalIpBypass()" class="px-2.5 py-1.5 rounded-lg border text-xs font-medium transition flex items-center gap-1.5 bg-slate-200 text-slate-700 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700" title="ကမ္ဘာပေါ်ရှိ မည်သည့် IP/Website မဆို ကန့်သတ်ချက်မရှိ ဝင်ရောက်ရှာဖွေခွင့်">
+                    <i class="fa-solid fa-shield-halved text-indigo-500"></i>
+                    <span class="hidden md:inline">Global IP Bypass:</span>
+                    <span id="ipBypassStatus" class="font-bold text-slate-600 dark:text-slate-400">Off</span>
+                </button>
 
-        const defaultOrders = [
-            {
-                id: "ORD-9901",
-                customerName: "မဆုမြတ်နိုး",
-                phone: "09450001122",
-                address: "အမှတ် (၄၅)၊ လမ်း ၅၀၊ ပဇွန်တောင်မြို့နယ်၊ ရန်ကုန်။",
-                items: [
-                    { code: "HT-001", name: "ရိုးရာ အကွက်ဆန်း ကွင်းချုပ် ထဘီ", price: 25000, qty: 1, size: "Free Size", color: "အစိမ်းရင့်" }
-                ],
-                totalAmount: 25000,
-                status: "Pending",
-                paymentMethod: "KBZ Pay",
-                date: "2026-09-05 14:30",
-                note: "အမြန်ပို့ပေးပါရန်"
-            }
-        ];
+                <!-- Internet Search Toggle -->
+                <button id="toggleSearchBtn" onclick="toggleInternetSearch()" class="px-2.5 py-1.5 rounded-lg border text-xs font-medium transition flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-800">
+                    <i class="fa-solid fa-globe"></i>
+                    <span class="hidden md:inline">အင်တာနက် ရှာဖွေရေး:</span>
+                    <span id="searchStatusText" class="font-bold">On</span>
+                </button>
 
-        const defaultExpenses = [
-            { id: "EX-01", title: "ဆိုင်လခ (စက်တင်ဘာ)", amount: 150000, category: "ဆိုင်စရိတ်", date: "2026-09-01" },
-            { id: "EX-02", title: "ပါဆယ်ထုပ် ပလတ်စတစ်နှင့် အိတ်ဝယ်ယူခြင်း", amount: 25000, category: "ထုပ်ပိုးစရိတ်", date: "2026-09-03" }
-        ];
+                <!-- Memory View Button -->
+                <button onclick="openMemoryModal()" class="px-2.5 py-1.5 rounded-lg border border-amber-300 dark:border-amber-700/50 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 hover:bg-amber-100 text-xs font-medium transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-brain text-amber-500"></i>
+                    <span class="hidden sm:inline">မှတ်ဉာဏ် ဘဏ်</span>
+                    <span id="memoryBadgeCount" class="bg-amber-500 text-white text-[10px] px-1.5 py-0.2 rounded-full font-sans font-bold">0</span>
+                </button>
 
-        const defaultSocial = {
-            messenger: "https://m.me/pankhayayfashion",
-            telegram: "https://t.me/pankhayayfashion",
-            phone: "09971234567",
-            shopName: "Pan Kha Yay (ပန်းခရေ အထည်ဆိုင်)",
-            kbzPay: "09971234567 (မဆုဆု)",
-            wavePay: "09971234567 (မဆုဆု)"
-        };
+                <!-- Developer System Rules Modal Trigger -->
+                <button onclick="openSettingsModal()" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="ဖန်တီးသူ မူဝါဒ လမ်းညွှန်ချက်များ">
+                    <i class="fa-solid fa-sliders"></i>
+                </button>
 
-        function App() {
-            const [products, setProducts] = React.useState(() => {
-                try {
-                    const saved = localStorage.getItem('pankhayay_products_v6');
-                    return saved ? JSON.parse(saved) : defaultProducts;
-                } catch(e) {
-                    return defaultProducts;
-                }
-            });
+                <!-- Dark Mode Toggle -->
+                <button onclick="toggleDarkMode()" class="p-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-amber-500 dark:text-amber-400 transition">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
 
-            const [orders, setOrders] = React.useState(() => {
-                try {
-                    const saved = localStorage.getItem('pankhayay_orders_v6');
-                    return saved ? JSON.parse(saved) : defaultOrders;
-                } catch(e) {
-                    return defaultOrders;
-                }
-            });
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-5 flex flex-col justify-between overflow-hidden">
+        
+        <!-- Welcome Banner & Quick Action Cards -->
+        <div id="welcomeBanner" class="my-auto text-center py-6 px-4 transition-all duration-300">
+            <div class="inline-flex p-4 rounded-2xl bg-gradient-to-br from-amber-500/20 via-emerald-500/20 to-indigo-500/20 border border-amber-500/30 mb-4 glow-effect">
+                <i class="fa-solid fa-microchip text-4xl text-amber-500"></i>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2">မင်္ဂလာပါ! မြန်မာ AI Smart Assistant မှ ကြိုဆိုပါသည်။</h2>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed">
+                သင့်၏ ကိုယ်ရေးအချက်အလက်များကို မှတ်သားနိုင်သော **Memory ဘဏ်**၊ အင်တာနက်မှ နောက်ဆုံးပေါ် အချက်အလက်များ ရှာဖွေပေးခြင်း၊ **Image ဖန်တီးပေးခြင်း**၊ **Video ရှာပေးခြင်း** နှင့် **Global IP Bypass** စနစ်များ အပြည့်အဝ ပါဝင်ပါသည်။
+            </p>
 
-            const [expenses, setExpenses] = React.useState(() => {
-                try {
-                    const saved = localStorage.getItem('pankhayay_expenses_v6');
-                    return saved ? JSON.parse(saved) : defaultExpenses;
-                } catch(e) {
-                    return defaultExpenses;
-                }
-            });
+            <!-- Quick Action Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 max-w-4xl mx-auto text-left">
+                <button onclick="useQuickPrompt('ယနေ့ မြန်မာနိုင်ငံ၏ နောက်ဆုံးရ စီးပွားရေးနှင့် သတင်းအချက်အလက်များကို ရှာပေးပါ')" class="p-3.5 rounded-xl bg-white dark:bg-myanmar-darkcard border border-slate-200 dark:border-slate-700/80 hover:border-emerald-500 transition shadow-sm group">
+                    <div class="text-emerald-500 mb-2 group-hover:scale-110 transition-transform"><i class="fa-solid fa-newspaper text-xl"></i></div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">နောက်ဆုံးရ သတင်းများ</div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">အင်တာနက်မှ အလိုအလျောက် ရှာဖွေရန်</div>
+                </button>
 
-            const [socialLinks, setSocialLinks] = React.useState(() => {
-                try {
-                    const saved = localStorage.getItem('pankhayay_social_v6');
-                    return saved ? JSON.parse(saved) : defaultSocial;
-                } catch(e) {
-                    return defaultSocial;
-                }
-            });
+                <button onclick="useQuickPrompt('ရုပ်ပုံ: ရွှေတိဂုံဘုရား၏ နေဝင်ချိန် သပ္ပါယ်ဖွယ်ရာ 3D ရုပ်ပုံ ဖန်တီးပေးပါ')" class="p-3.5 rounded-xl bg-white dark:bg-myanmar-darkcard border border-slate-200 dark:border-slate-700/80 hover:border-purple-500 transition shadow-sm group">
+                    <div class="text-purple-500 mb-2 group-hover:scale-110 transition-transform"><i class="fa-solid fa-wand-magic-sparkles text-xl"></i></div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">Image Generation</div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">AI ဖြင့် ရုပ်ပုံသစ် ရေးဆွဲခိုင်းရန်</div>
+                </button>
 
-            const [role, setRole] = React.useState('customer');
-            const [isAdminAuthenticated, setIsAdminAuthenticated] = React.useState(false);
-            const [adminPin, setAdminPin] = React.useState(() => {
-                return localStorage.getItem('pankhayay_admin_pin_v6') || '1234';
-            });
-            const [showAdminLoginModal, setShowAdminLoginModal] = React.useState(false);
-            const [pinInput, setPinInput] = React.useState('');
-            const [pinError, setPinError] = React.useState('');
+                <button onclick="useQuickPrompt('ဗီဒီယို: ပုဂံ ရှေးဟောင်းယဉ်ကျေးမှု နယ်မြေအကြောင်း ဗီဒီယို ရှာပေးပါ')" class="p-3.5 rounded-xl bg-white dark:bg-myanmar-darkcard border border-slate-200 dark:border-slate-700/80 hover:border-rose-500 transition shadow-sm group">
+                    <div class="text-rose-500 mb-2 group-hover:scale-110 transition-transform"><i class="fa-solid fa-video text-xl"></i></div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">Video Search</div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">ဗီဒီယို နှင့် Clip များ ရှာဖွေရန်</div>
+                </button>
 
-            const [activeTab, setActiveTab] = React.useState('shop');
+                <button onclick="useQuickPrompt('ငါ့အမည်က မောင်မောင် ဖြစ်ပြီး၊ Full Stack Web Developer တစ်ယောက်ပါလို့ မှတ်ထားပေးပါ')" class="p-3.5 rounded-xl bg-white dark:bg-myanmar-darkcard border border-slate-200 dark:border-slate-700/80 hover:border-amber-500 transition shadow-sm group">
+                    <div class="text-amber-500 mb-2 group-hover:scale-110 transition-transform"><i class="fa-solid fa-brain text-xl"></i></div>
+                    <div class="text-xs font-bold text-slate-800 dark:text-slate-200">အချက်အလက် မှတ်ခိုင်းရန်</div>
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Memory Bank တွင် အမြဲမှတ်ထားမည်</div>
+                </button>
+            </div>
+        </div>
 
-            React.useEffect(() => {
-                try { localStorage.setItem('pankhayay_products_v6', JSON.stringify(products)); } catch(e){}
-            }, [products]);
+        <!-- Chat History Container -->
+        <div id="chatContainer" class="flex-1 overflow-y-auto pr-1 space-y-4 mb-3 hidden">
+            <!-- Dynamic Messages Append Here -->
+        </div>
 
-            React.useEffect(() => {
-                try { localStorage.setItem('pankhayay_orders_v6', JSON.stringify(orders)); } catch(e){}
-            }, [orders]);
+        <!-- Live Status Indicator -->
+        <div id="liveSearchIndicator" class="hidden mb-2 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs flex items-center justify-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 search-pulse"></span>
+            <span id="liveSearchText"><i class="fa-solid fa-magnifying-glass animate-spin"></i> အင်တာနက်နှင့် ကမ္ဘာလုံးဆိုင်ရာ IP လမ်းကြောင်းများမှ အချက်အလက် ရှာဖွေနေပါသည်...</span>
+        </div>
 
-            React.useEffect(() => {
-                try { localStorage.setItem('pankhayay_expenses_v6', JSON.stringify(expenses)); } catch(e){}
-            }, [expenses]);
+        <!-- Image Upload Preview Bar -->
+        <div id="imagePreviewContainer" class="hidden mb-2 p-2 bg-slate-200 dark:bg-slate-800 rounded-xl flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <img id="imagePreviewThumb" src="" alt="Upload Preview" class="w-10 h-10 object-cover rounded-lg border border-slate-300 dark:border-slate-700">
+                <span class="text-xs text-slate-600 dark:text-slate-300 font-medium">ဓာတ်ပုံ ပူးတွဲထားပါသည် (AI သို့ မေးမြန်းရန်)</span>
+            </div>
+            <button onclick="clearAttachedImage()" class="p-1.5 text-slate-400 hover:text-rose-500 text-xs">
+                <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+        </div>
 
-            React.useEffect(() => {
-                try { localStorage.setItem('pankhayay_social_v6', JSON.stringify(socialLinks)); } catch(e){}
-            }, [socialLinks]);
+        <!-- User Input Area -->
+        <div class="relative bg-white dark:bg-myanmar-darkcard border border-slate-200 dark:border-myanmar-darkborder rounded-2xl shadow-xl p-2 sm:p-3 transition-all">
+            <form id="chatForm" onsubmit="handleChatSubmit(event)" class="flex flex-col gap-2">
+                
+                <!-- Prompt Mode Selector Pills -->
+                <div class="flex items-center gap-1.5 pb-1 border-b border-slate-100 dark:border-slate-800 text-[11px]">
+                    <span class="text-slate-400 font-medium mr-1">မေးမြန်းမှု ပုံစံ:</span>
+                    <button type="button" id="modeChat" onclick="setPromptMode('chat')" class="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-medium transition">
+                        <i class="fa-solid fa-comments"></i> စကားပြော / မေးမြန်းမည်
+                    </button>
+                    <button type="button" id="modeImage" onclick="setPromptMode('image')" class="px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium hover:bg-purple-500 hover:text-white transition">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Image ဖန်တီးမည်
+                    </button>
+                    <button type="button" id="modeVideo" onclick="setPromptMode('video')" class="px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium hover:bg-rose-500 hover:text-white transition">
+                        <i class="fa-solid fa-video"></i> Video ရှာမည်
+                    </button>
+                </div>
 
-            const [cart, setCart] = React.useState([]);
-            const [searchQuery, setSearchQuery] = React.useState('');
-            const [selectedCategory, setSelectedCategory] = React.useState('All');
+                <div class="flex items-end gap-2">
+                    <!-- Image File Attachment Input -->
+                    <input type="file" id="imageFileInput" accept="image/*" class="hidden" onchange="handleImageFileSelect(event)">
+                    <button type="button" onclick="document.getElementById('imageFileInput').click()" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition shrink-0" title="ဓာတ်ပုံ ပူးတွဲ မေးမြန်းရန်">
+                        <i class="fa-solid fa-paperclip text-sm"></i>
+                    </button>
 
-            const [isCartOpen, setIsCartOpen] = React.useState(false);
-            const [selectedProductDetails, setSelectedProductDetails] = React.useState(null);
-            const [editingProduct, setEditingProduct] = React.useState(null);
-            const [checkoutModalOpen, setCheckoutModalOpen] = React.useState(false);
-            const [orderSuccessModal, setOrderSuccessModal] = React.useState(null);
-            const [selectedVoucherOrder, setSelectedVoucherOrder] = React.useState(null);
+                    <textarea 
+                        id="userPromptInput" 
+                        rows="2" 
+                        placeholder="မြန်မာလို မေးမြန်းလိုသည်များကို ရေးသားပါ... (ဥပမာ - ငါ့နာမည် မောင်မောင် လို့ မှတ်ထားပါ သို့မဟုတ် 'ရုပ်ပုံ: လှပသော ပုဂံ နေဝင်ချိန်')" 
+                        class="w-full bg-transparent border-0 focus:ring-0 resize-none text-slate-800 dark:text-slate-100 placeholder-slate-400 text-sm sm:text-base px-1 py-1 focus:outline-none"
+                        onkeydown="handleKeyDown(event)"
+                    ></textarea>
 
-            const [toast, setToast] = React.useState(null);
-            const showToast = (msg, type = 'success') => {
-                setToast({ msg, type });
-                setTimeout(() => setToast(null), 3500);
-            };
+                    <button 
+                        type="submit" 
+                        id="sendBtn"
+                        class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-emerald-600 to-indigo-600 hover:opacity-90 text-white font-medium shadow-md transition flex items-center gap-1.5 shrink-0 disabled:opacity-50"
+                    >
+                        <span id="sendBtnText">မေးမည်</span>
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </div>
 
-            const filteredProducts = products.filter(p => {
-                const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                      p.code.toLowerCase().includes(searchQuery.toLowerCase());
-                const matchesCat = selectedCategory === 'All' || p.category === selectedCategory;
-                return matchesSearch && matchesCat;
-            });
+                <!-- Input Footer Toolbar -->
+                <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800/80 text-[11px] text-slate-500 dark:text-slate-400 px-1">
+                    <div class="flex items-center space-x-3">
+                        <span class="flex items-center gap-1">
+                            <i class="fa-regular fa-keyboard"></i> <span class="hidden sm:inline">Enter = ပို့မည် | Shift+Enter = စာကြောင်းသစ်</span>
+                        </span>
+                    </div>
 
-            const addToCart = (product, size, color, qty = 1) => {
-                const itemKey = `${product.id}-${size}-${color}`;
-                const existing = cart.find(item => item.key === itemKey);
-                if (existing) {
-                    setCart(cart.map(item => item.key === itemKey ? { ...item, qty: item.qty + qty } : item));
-                } else {
-                    setCart([...cart, {
-                        key: itemKey,
-                        id: product.id,
-                        code: product.code,
-                        name: product.name,
-                        price: product.price,
-                        image: product.image,
-                        size: size || (product.sizes && product.sizes[0]) || 'Standard',
-                        color: color || (product.colors && product.colors[0]) || 'Standard',
-                        qty: qty
-                    }]);
-                }
-                showToast(`"${product.name}" အား ခြင်းထဲသို့ ထည့်ပြီးပါပြီ!`);
-            };
+                    <div class="flex items-center space-x-2">
+                        <button type="button" onclick="clearChatHistory()" class="hover:text-rose-500 transition flex items-center gap-1">
+                            <i class="fa-solid fa-trash-can"></i> <span>စကားဝိုင်း ရှင်းမည်</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
 
-            const updateCartQty = (key, delta) => {
-                setCart(cart.map(item => {
-                    if (item.key === key) {
-                        const newQty = item.qty + delta;
-                        return newQty > 0 ? { ...item, qty: newQty } : null;
-                    }
-                    return item;
-                }).filter(Boolean));
-            };
+    <!-- Memory Bank Modal -->
+    <div id="memoryModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-myanmar-darkcard border border-slate-200 dark:border-slate-700 rounded-2xl max-w-lg w-full p-5 shadow-2xl relative max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-700">
+                <div class="flex items-center gap-2 text-amber-500 font-bold text-base sm:text-lg">
+                    <i class="fa-solid fa-brain text-xl"></i>
+                    <h3 class="text-slate-900 dark:text-white">AI ၏ မှတ်ဉာဏ် ဘဏ် (Memory Bank)</h3>
+                </div>
+                <button onclick="closeMemoryModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
 
-            const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            <p class="text-xs text-slate-500 dark:text-slate-400 my-2.5 leading-relaxed">
+                AI မှ အလိုအလျောက် သို့မဟုတ် သင် ကိုယ်တိုင် မှတ်ခိုင်းထားသော အချက်အလက်များ ဖြစ်ပါသည်။ စကားပြောသည့်အခါ ဤအချက်အလက်များကို အမြဲ သတိရနေမည် ဖြစ်ပါသည်။
+            </p>
 
-            const handleDeleteProduct = (productId) => {
-                if (window.confirm("ဤအထည်စရင်းကို ဖျက်ရန် သေချာပါသလား?")) {
-                    setProducts(products.filter(p => p.id !== productId));
-                    showToast("အထည်စာရင်း ဖျက်ပြီးပါပြီ", "error");
-                }
-            };
+            <!-- Add Custom Memory Field -->
+            <div class="flex gap-2 mb-3">
+                <input id="newMemoryInput" type="text" placeholder="အချက်အလက်သစ် မှတ်ခိုင်းရန် (ဥပမာ- ငါ့မွေးနေ့က ဇန်နဝါရီ ၁ ရက်)" class="flex-1 px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:border-amber-500">
+                <button onclick="addNewMemoryFromInput()" class="px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs sm:text-sm font-medium transition shrink-0">
+                    မှတ်မည်
+                </button>
+            </div>
 
-            const handleUpdateProduct = (updatedProd) => {
-                setProducts(products.map(p => p.id === updatedProd.id ? updatedProd : p));
-                setEditingProduct(null);
-                showToast("အထည်အချက်အလက် ပြင်ဆင်ပြီးပါပြီ!");
-            };
+            <!-- Memory Items List -->
+            <div id="memoryItemsList" class="flex-1 overflow-y-auto space-y-2 pr-1 my-1 max-h-[300px]">
+                <!-- Memory items render dynamically -->
+            </div>
 
-            return (
-                <div className="flex flex-col min-h-screen pb-16 md:pb-0">
-                    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-emerald-100">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="flex items-center justify-between h-16">
-                                <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab('shop')}>
-                                    <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-emerald-200">
-                                        <i className="fa-solid fa-shirt"></i>
-                                    </div>
-                                    <div>
-                                        <h1 className="font-bold text-base sm:text-lg text-slate-800 leading-tight">Pan Kha Yay (ပန်းခရေ အထည်ဆိုင်)</h1>
-                                        <span className="text-[11px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-md">
-                                            ပန်းခရေအထည်ဆိုင်မှကြိုဆိုပါသည်။
-                                        </span>
-                                    </div>
-                                </div>
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                <button onclick="clearAllMemories()" class="text-xs text-rose-500 hover:underline flex items-center gap-1">
+                    <i class="fa-solid fa-eraser"></i> မှတ်ဉာဏ် အားလုံး ဖျက်မည်
+                </button>
+                <button onclick="closeMemoryModal()" class="px-4 py-1.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 rounded-xl text-xs sm:text-sm font-medium transition">
+                    ပိတ်မည်
+                </button>
+            </div>
+        </div>
+    </div>
 
-                                <nav className="hidden lg:flex items-center space-x-1">
-                                    <button 
-                                        onClick={() => setActiveTab('shop')} 
-                                        className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${activeTab === 'shop' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
-                                    >
-                                        <i className="fa-solid fa-store"></i> ဆိုင်မျက်နှာစာ
-                                    </button>
-
-                                    {role === 'admin' && (
-                                        <React.Fragment>
-                                            <button 
-                                                onClick={() => setActiveTab('inventory')} 
-                                                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${activeTab === 'inventory' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
-                                            >
-                                                <i className="fa-solid fa-boxes-stacked"></i> အထည်စာရင်း စစ်/ပြင်
-                                            </button>
-
-                                            <button 
-                                                onClick={() => setActiveTab('addProduct')} 
-                                                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${activeTab === 'addProduct' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
-                                            >
-                                                <i className="fa-solid fa-plus-circle"></i> အထည်သစ်တင်ရန်
-                                            </button>
-
-                                            <button 
-                                                onClick={() => setActiveTab('orders')} 
-                                                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 relative ${activeTab === 'orders' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
-                                            >
-                                                <i className="fa-solid fa-clipboard-list"></i> Order စီမံရန်
-                                                {orders.filter(o => o.status === 'Pending').length > 0 && (
-                                                    <span className="bg-amber-400 text-slate-900 text-[10px] px-1.5 py-0.2 rounded-full font-black">
-                                                        {orders.filter(o => o.status === 'Pending').length}
-                                                    </span>
-                                                )}
-                                            </button>
-
-                                            <button 
-                                                onClick={() => setActiveTab('ledger')} 
-                                                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${activeTab === 'ledger' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
-                                            >
-                                                <i className="fa-solid fa-chart-pie"></i> ဝင်/ထွက် စာရင်း
-                                            </button>
-
-                                            <button 
-                                                onClick={() => setActiveTab('settings')} 
-                                                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font
+    <!-- Developer Settings Modal (System Prompt & Rules) -->
+    <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white dark:bg-myanmar-darkcard border border-slate
