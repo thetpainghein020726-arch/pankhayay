@@ -1,0 +1,1482 @@
+
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Store Management & Ordering System</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React & React DOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Myanmar Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Padauk', 'Poppins', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const defaultProducts = [
+            {
+                id: "P-101",
+                code: "DR-001",
+                name: "ကိုရီးယားစတိုင် နွေရာသီ ပွဲတက်ဂါဝန်",
+                category: "ဂါဝန် (Dresses)",
+                price: 28000,
+                costPrice: 20000,
+                stock: 15,
+                sizes: ["S", "M", "L"],
+                colors: ["ပန်းရောင်", "အဖြူရောင်"],
+                image: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=500&auto=format&fit=crop&q=60",
+                description: "အသားအေးပြီး ဝတ်ရတာ ပေါ့ပါးလန်းဆန်းစေသော ကိုရီးယားဒီဇိုင်းဆန်း ဂါဝန်ဖြစ်ပါသည်။"
+            },
+            {
+                id: "P-102",
+                code: "SH-002",
+                name: "လက်ရှည် ကော်လံပါ ရှပ်အင်္ကျီ",
+                category: "အင်္ကျီ (Shirts)",
+                price: 18500,
+                costPrice: 12000,
+                stock: 22,
+                sizes: ["M", "L", "XL"],
+                colors: ["အပြာရောင်", "အနက်ရောင်"],
+                image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500&auto=format&fit=crop&q=60",
+                description: "ရုံးတက် ပွဲတက် ဝတ်ဆင်နိုင်သော အဆင့်မြင့် Cotton ရှပ်အင်္ကျီ ဖြစ်ပါသည်။"
+            },
+            {
+                id: "P-103",
+                code: "JN-003",
+                name: "ခါးမြင့် ဂျင်းဘောင်းဘီရှည်",
+                category: "ဘောင်းဘီ (Jeans)",
+                price: 24000,
+                costPrice: 16500,
+                stock: 8,
+                sizes: ["26", "28", "30", "32"],
+                colors: ["ဂျင်းရင့်", "ဂျင်းနု"],
+                image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&auto=format&fit=crop&q=60",
+                description: "ပုံကျလှပပြီး အသားရုန်းနိုင်သော အကောင်းစား Stretch Jeans ဖြစ်ပါသည်။"
+            },
+            {
+                id: "P-104",
+                code: "JK-004",
+                name: "ဖက်ရှင် ဂျာကင် အင်္ကျီ",
+                category: "အင်္ကျီ (Shirts)",
+                price: 32000,
+                costPrice: 22000,
+                stock: 5,
+                sizes: ["Free Size"],
+                colors: ["အညိုရောင်"],
+                image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500&auto=format&fit=crop&q=60",
+                description: "ဆောင်းရာသီနှင့် ခရီးသွားရာတွင် ဝတ်ဆင်ရန် သင့်တော်သော ဖက်ရှင်ဂျာကင် ဖြစ်ပါသည်။"
+            }
+        ];
+
+        const defaultOrders = [
+            {
+                id: "ORD-9901",
+                customerName: "မဆုမြတ်နိုး",
+                phone: "09450001122",
+                address: "အမှတ် (၄၅)၊ လမ်း ၅၀၊ ပဇွန်တောင်မြို့နယ်၊ ရန်ကုန်။",
+                items: [
+                    { code: "DR-001", name: "ကိုရီးယားစတိုင် နွေရာသီ ပွဲတက်ဂါဝန်", price: 28000, qty: 1, size: "M", color: "ပန်းရောင်" }
+                ],
+                totalAmount: 28000,
+                status: "Pending",
+                paymentMethod: "KBZ Pay",
+                date: "2026-09-05 14:30",
+                note: "အမြန်ပို့ပေးပါရန်"
+            },
+            {
+                id: "ORD-9902",
+                customerName: "ကိုကျော်စွာ",
+                phone: "09250123456",
+                address: "မန္တလေးမြို့၊ ချမ်းအေးသာစံမြို့နယ်။",
+                items: [
+                    { code: "SH-002", name: "လက်ရှည် ကော်လံပါ ရှပ်အင်္ကျီ", price: 18500, qty: 2, size: "L", color: "အနက်ရောင်" }
+                ],
+                totalAmount: 37000,
+                status: "Approved",
+                paymentMethod: "WavePay",
+                date: "2026-09-06 10:15",
+                note: "မွန်းလွဲပိုင်း ပို့ပေးပါ။"
+            }
+        ];
+
+        const defaultExpenses = [
+            { id: "EX-01", title: "ဆိုင်လခ (စက်တင်ဘာ)", amount: 150000, category: "ဆိုင်စရိတ်", date: "2026-09-01" },
+            { id: "EX-02", title: "ပါဆယ်ထုပ် ပလတ်စတစ်နှင့် အိတ်ဝယ်ယူခြင်း", amount: 25000, category: "ထုပ်ပိုးစရိတ်", date: "2026-09-03" },
+            { id: "EX-03", title: "အထည် ပို့ဆောင်ခ (Deli Fee)", amount: 12000, category: "ပို့ဆောင်စရိတ်", date: "2026-09-04" }
+        ];
+
+        const defaultSocial = {
+            messenger: "https://m.me/yourfashionboutique",
+            telegram: "https://t.me/yourfashionboutique",
+            phone: "09971234567",
+            shopName: "Shwe Fashion Boutique (ရွှေဖက်ရှင် အထည်ဆိုင်)",
+            kbzPay: "09971234567 (မဆုဆု)",
+            wavePay: "09971234567 (မဆုဆု)"
+        };
+
+        function App() {
+            // LocalStorage persistence helpers
+            const [products, setProducts] = React.useState(() => {
+                const saved = localStorage.getItem('fashion_products');
+                return saved ? JSON.parse(saved) : defaultProducts;
+            });
+
+            const [orders, setOrders] = React.useState(() => {
+                const saved = localStorage.getItem('fashion_orders');
+                return saved ? JSON.parse(saved) : defaultOrders;
+            });
+
+            const [expenses, setExpenses] = React.useState(() => {
+                const saved = localStorage.getItem('fashion_expenses');
+                return saved ? JSON.parse(saved) : defaultExpenses;
+            });
+
+            const [socialLinks, setSocialLinks] = React.useState(() => {
+                const saved = localStorage.getItem('fashion_social');
+                return saved ? JSON.parse(saved) : defaultSocial;
+            });
+
+            // Admin Authentication & Passcode Lock State
+            const [role, setRole] = React.useState('customer'); // Default to customer mode
+            const [isAdminAuthenticated, setIsAdminAuthenticated] = React.useState(false);
+            const [adminPin, setAdminPin] = React.useState(() => {
+                return localStorage.getItem('fashion_admin_pin') || '1234';
+            });
+            const [showAdminLoginModal, setShowAdminLoginModal] = React.useState(false);
+            const [pinInput, setPinInput] = React.useState('');
+            const [pinError, setPinError] = React.useState('');
+
+            const [activeTab, setActiveTab] = React.useState('shop'); // shop, inventory, addProduct, orders, ledger, settings
+
+            // Save state to local storage automatically
+            React.useEffect(() => {
+                localStorage.setItem('fashion_products', JSON.stringify(products));
+            }, [products]);
+
+            React.useEffect(() => {
+                localStorage.setItem('fashion_orders', JSON.stringify(orders));
+            }, [orders]);
+
+            React.useEffect(() => {
+                localStorage.setItem('fashion_expenses', JSON.stringify(expenses));
+            }, [expenses]);
+
+            React.useEffect(() => {
+                localStorage.setItem('fashion_social', JSON.stringify(socialLinks));
+            }, [socialLinks]);
+
+            // Shopping Cart & Filters
+            const [cart, setCart] = React.useState([]);
+            const [searchQuery, setSearchQuery] = React.useState('');
+            const [selectedCategory, setSelectedCategory] = React.useState('All');
+
+            // Modals & Popups
+            const [isCartOpen, setIsCartOpen] = React.useState(false);
+            const [selectedProductDetails, setSelectedProductDetails] = React.useState(null);
+            const [editingProduct, setEditingProduct] = React.useState(null);
+            const [checkoutModalOpen, setCheckoutModalOpen] = React.useState(false);
+            const [orderSuccessModal, setOrderSuccessModal] = React.useState(null);
+            const [selectedVoucherOrder, setSelectedVoucherOrder] = React.useState(null);
+
+            // Toast Notifications
+            const [toast, setToast] = React.useState(null);
+            const showToast = (msg, type = 'success') => {
+                setToast({ msg, type });
+                setTimeout(() => setToast(null), 3500);
+            };
+
+            // Filter Products
+            const filteredProducts = products.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      p.code.toLowerCase().includes(searchQuery.toLowerCase());
+                const matchesCat = selectedCategory === 'All' || p.category === selectedCategory;
+                return matchesSearch && matchesCat;
+            });
+
+            // Cart Logic
+            const addToCart = (product, size, color, qty = 1) => {
+                const itemKey = `${product.id}-${size}-${color}`;
+                const existing = cart.find(item => item.key === itemKey);
+                if (existing) {
+                    setCart(cart.map(item => item.key === itemKey ? { ...item, qty: item.qty + qty } : item));
+                } else {
+                    setCart([...cart, {
+                        key: itemKey,
+                        id: product.id,
+                        code: product.code,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        size: size || product.sizes[0] || 'Free Size',
+                        color: color || product.colors[0] || 'Standard',
+                        qty: qty
+                    }]);
+                }
+                showToast(`"${product.name}" (${size}) အား ခြင်းထဲသို့ ထည့်ပြီးပါပြီ!`);
+            };
+
+            const updateCartQty = (key, delta) => {
+                setCart(cart.map(item => {
+                    if (item.key === key) {
+                        const newQty = item.qty + delta;
+                        return newQty > 0 ? { ...item, qty: newQty } : null;
+                    }
+                    return item;
+                }).filter(Boolean));
+            };
+
+            const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            // Product Delete Handler
+            const handleDeleteProduct = (productId) => {
+                if (window.confirm("ဤအထည်စရင်းကို ဖျက်ရန် သေချာပါသလား?")) {
+                    setProducts(products.filter(p => p.id !== productId));
+                    showToast("အထည်စာရင်း ဖျက်ပြီးပါပြီ", "error");
+                }
+            };
+
+            return (
+                <div class="flex flex-col min-h-screen pb-16 md:pb-0">
+                    {}
+                    {/* Header */}
+                    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-sm border-b border-emerald-100">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="flex items-center justify-between h-16">
+                                {/* Logo & Shop Name */}
+                                <div class="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab('shop')}>
+                                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-emerald-200">
+                                        <i class="fa-solid fa-shirt"></i>
+                                    </div>
+                                    <div>
+                                        <h1 class="font-bold text-base sm:text-lg text-slate-800 leading-tight">{socialLinks.shopName}</h1>
+                                        <span class="text-[11px] bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-md">
+                                            အထည်ရောင်းဝယ်ရေး စနစ်
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Navigation Tabs */}
+                                <nav class="hidden lg:flex items-center space-x-1">
+                                    <button 
+                                        onClick={() => setActiveTab('shop')} 
+                                        class={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${activeTab === 'shop' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
+                                    >
+                                        <i class="fa-solid fa-store"></i> ဆိုင်မျက်နှာစာ
+                                    </button>
+
+                                    {/* Admin Specific Tabs */}
+                                    {role === 'admin' && (
+                                        <>
+                                            <button 
+                                                onClick={() => setActiveTab('inventory')} 
+                                                class={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${activeTab === 'inventory' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
+                                            >
+                                                <i class="fa-solid fa-boxes-stacked"></i> အထည်စာရင်းစစ်/ပြင်ရန်
+                                            </button>
+
+                                            <button 
+                                                onClick={() => setActiveTab('addProduct')} 
+                                                class={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${activeTab === 'addProduct' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
+                                            >
+                                                <i class="fa-solid fa-plus-circle"></i> အထည်သစ်တင်ရန်
+                                            </button>
+
+                                            <button 
+                                                onClick={() => setActiveTab('orders')} 
+                                                class={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 relative ${activeTab === 'orders' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
+                                            >
+                                                <i class="fa-solid fa-clipboard-list"></i> Order စီမံရန်
+                                                {orders.filter(o => o.status === 'Pending').length > 0 && (
+                                                    <span class="bg-amber-400 text-slate-900 text-[10px] px-1.5 py-0.2 rounded-full font-black">
+                                                        {orders.filter(o => o.status === 'Pending').length}
+                                                    </span>
+                                                )}
+                                            </button>
+
+                                            <button 
+                                                onClick={() => setActiveTab('ledger')} 
+                                                class={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${activeTab === 'ledger' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
+                                            >
+                                                <i class="fa-solid fa-chart-pie"></i> ဝင်/ထွက် စာရင်း
+                                            </button>
+
+                                            <button 
+                                                onClick={() => setActiveTab('settings')} 
+                                                class={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 ${activeTab === 'settings' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' : 'text-slate-600 hover:bg-slate-100'}`}
+                                            >
+                                                <i class="fa-solid fa-sliders"></i> ချိတ်ဆက်မှု အပြင်အဆင်
+                                            </button>
+                                        </>
+                                    )}
+                                </nav>
+
+                                {/* Mode Switcher & Cart */}
+                                <div class="flex items-center space-x-2 sm:space-x-3">
+                                    {role === 'admin' ? (
+                                        <button
+                                            onClick={() => {
+                                                setRole('customer');
+                                                setIsAdminAuthenticated(false);
+                                                setActiveTab('shop');
+                                                showToast("Admin Mode မှ ထွက်လိုက်ပါပြီ");
+                                            }}
+                                            class="px-3 py-1.5 rounded-full text-xs font-bold transition-all border flex items-center gap-1.5 shadow-sm bg-emerald-100 text-emerald-800 border-emerald-300 hover:bg-emerald-200"
+                                        >
+                                            <i class="fa-solid fa-right-from-bracket"></i>
+                                            <span>Admin ထွက်မည်</span>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={() => {
+                                                setPinInput('');
+                                                setPinError('');
+                                                setShowAdminLoginModal(true);
+                                            }}
+                                            class="px-3 py-1.5 rounded-full text-xs font-bold transition-all border flex items-center gap-1.5 shadow-sm bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200"
+                                        >
+                                            <i class="fa-solid fa-lock text-emerald-600"></i>
+                                            <span>Admin Login</span>
+                                        </button>
+                                    )}
+
+                                    {/* Cart Button */}
+                                    <button 
+                                        onClick={() => setIsCartOpen(true)}
+                                        class="relative p-2.5 rounded-2xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-all"
+                                        title="ဈေးဝယ်ခြင်း"
+                                    >
+                                        <i class="fa-solid fa-cart-shopping text-base"></i>
+                                        {cart.length > 0 && (
+                                            <span class="absolute -top-1 -right-1 bg-emerald-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold shadow">
+                                                {cart.reduce((a, b) => a + b.qty, 0)}
+                                            </span>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Mobile Navigation Bar */}
+                        <div class="lg:hidden flex items-center justify-around border-t border-slate-100 bg-white py-2 px-2 overflow-x-auto">
+                            <button 
+                                onClick={() => setActiveTab('shop')} 
+                                class={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex flex-col items-center min-w-[60px] ${activeTab === 'shop' ? 'text-emerald-600 bg-emerald-50' : 'text-slate-500'}`}
+                            >
+                                <i class="fa-solid fa-store mb-0.5"></i> ဆိုင်
+                            </button>
+                            
+                            {role === 'admin' && (
+                                <>
+                                    <button 
+                                        onClick={() => setActiveTab('inventory')} 
+                                        class={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex flex-col items-center min-w-[60px] ${activeTab === 'inventory' ? 'text-emerald-600 bg-emerald-50' : 'text-slate-500'}`}
+                                    >
+                                        <i class="fa-solid fa-boxes-stacked mb-0.5"></i> အထည်များ
+                                    </button>
+                                    <button 
+                                        onClick={() => setActiveTab('addProduct')} 
+                                        class={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex flex-col items-center min-w-[60px] ${activeTab === 'addProduct' ? 'text-emerald-600 bg-emerald-50' : 'text-slate-500'}`}
+                                    >
+                                        <i class="fa-solid fa-plus-circle mb-0.5"></i> အထည်သစ်
+                                    </button>
+                                    <button 
+                                        onClick={() => setActiveTab('orders')} 
+                                        class={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex flex-col items-center min-w-[60px] ${activeTab === 'orders' ? 'text-emerald-600 bg-emerald-50' : 'text-slate-500'}`}
+                                    >
+                                        <i class="fa-solid fa-clipboard-list mb-0.5"></i> Orders
+                                    </button>
+                                    <button 
+                                        onClick={() => setActiveTab('ledger')} 
+                                        class={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex flex-col items-center min-w-[60px] ${activeTab === 'ledger' ? 'text-emerald-600 bg-emerald-50' : 'text-slate-500'}`}
+                                    >
+                                        <i class="fa-solid fa-chart-pie mb-0.5"></i> စာရင်း
+                                    </button>
+                                    <button 
+                                        onClick={() => setActiveTab('settings')} 
+                                        class={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex flex-col items-center min-w-[60px] ${activeTab === 'settings' ? 'text-emerald-600 bg-emerald-50' : 'text-slate-500'}`}
+                                    >
+                                        <i class="fa-solid fa-sliders mb-0.5"></i> အပြင်အဆင်
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                    </header>
+
+                    {/* Toast Notification Banner */}
+                    {toast && (
+                        <div class="fixed bottom-20 right-4 z-50 bg-slate-900 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-bounce">
+                            <i class={`fa-solid ${toast.type === 'error' ? 'fa-circle-exclamation text-rose-400' : 'fa-circle-check text-emerald-400'}`}></i>
+                            <span class="text-xs font-bold">{toast.msg}</span>
+                        </div>
+                    )}
+
+                    {/* Main Content Area */}
+                    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+                        {/* Admin Notice Banner */}
+                        {role === 'admin' && (
+                            <div class="mb-6 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 bg-emerald-600 text-white rounded-xl text-lg font-bold">
+                                        <i class="fa-solid fa-user-shield"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-emerald-950 text-sm">Admin Control Panel ဖွင့်ထားပါသည်။</h3>
+                                        <p class="text-xs text-emerald-800">အထည်သစ်တင်ရန်၊ အထည်ပြင်ရန်/ဖျက်ရန်၊ Order လက်ခံရန်နှင့် စာရင်းကြည့်ရန် အထက်ပါ Tab များကို အသုံးပြုပါ။</p>
+                                    </div>
+                                </div>
+                                <button 
+                                    onClick={() => setActiveTab('addProduct')} 
+                                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-1.5 rounded-xl font-bold text-xs shadow transition-all whitespace-nowrap"
+                                >
+                                    + အထည်သစ် တင်မည်
+                                </button>
+                            </div>
+                        )}
+
+                        {}
+                        {/* TAB 1: SHOP (ဆိုင်မျက်နှာစာ) */}
+                        {activeTab === 'shop' && (
+                            <div class="space-y-6">
+                                {/* Hero Banner in Green */}
+                                <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-green-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+                                    <div class="relative z-10 max-w-2xl">
+                                        <span class="bg-white/20 backdrop-blur-md text-xs px-3 py-1 rounded-full uppercase tracking-wider font-bold">
+                                            Shwe Fashion 2026 Collection
+                                        </span>
+                                        <h2 class="text-2xl sm:text-4xl font-extrabold mt-2 mb-3">
+                                            ခေတ်မီ အထည်ဆန်း ပွဲတက် ဝတ်စုံများ
+                                        </h2>
+                                        <p class="text-emerald-100 text-xs sm:text-sm mb-6">
+                                            အထည် Code (SKU) များဖြင့် ရှာဖွေနိုင်ပြီး Messenger သို့မဟုတ် Telegram သို့ တိုက်ရိုက် ရွေးချယ်အမှာစာ ပို့နိုင်ပါသည်။
+                                        </p>
+                                        
+                                        <div class="flex flex-wrap gap-3">
+                                            <a 
+                                                href={socialLinks.messenger} 
+                                                target="_blank" 
+                                                rel="noreferrer"
+                                                class="bg-white text-blue-600 hover:bg-slate-100 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all"
+                                            >
+                                                <i class="fa-brands fa-facebook-messenger text-lg"></i> Messenger
+                                            </a>
+                                            <a 
+                                                href={socialLinks.telegram} 
+                                                target="_blank" 
+                                                rel="noreferrer"
+                                                class="bg-sky-500 text-white hover:bg-sky-600 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition-all"
+                                            >
+                                                <i class="fa-brands fa-telegram text-lg"></i> Telegram
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Search Bar & Categories */}
+                                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                                    <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                                        {/* Search Input */}
+                                        <div class="relative w-full md:w-96">
+                                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                                            <input 
+                                                type="text" 
+                                                placeholder="အထည်အမည် သို့မဟုတ် Code (ဥပမာ- DR-001) ရှာရန်..."
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all"
+                                            />
+                                            {searchQuery && (
+                                                <button onClick={() => setSearchQuery('')} class="absolute right-3 top-3 text-slate-400 hover:text-slate-600">
+                                                    <i class="fa-solid fa-xmark"></i>
+                                                </button>
+                                            )}
+                                        </div>
+
+                                        {/* Category Tabs */}
+                                        <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 custom-scrollbar">
+                                            {["All", "ဂါဝန် (Dresses)", "အင်္ကျီ (Shirts)", "ဘောင်းဘီ (Jeans)", "စကတ် (Skirts)"].map(cat => (
+                                                <button
+                                                    key={cat}
+                                                    onClick={() => setSelectedCategory(cat)}
+                                                    class={`px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                                                        selectedCategory === cat 
+                                                            ? 'bg-emerald-600 text-white shadow-md shadow-emerald-200' 
+                                                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                                                    }`}
+                                                >
+                                                    {cat === "All" ? "အားလုံး" : cat}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Products Grid */}
+                                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+                                    {filteredProducts.map(product => (
+                                        <div key={product.id} class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all overflow-hidden flex flex-col justify-between group">
+                                            <div>
+                                                {/* Image & Code Badge */}
+                                                <div class="relative aspect-square overflow-hidden bg-slate-100 cursor-pointer" onClick={() => setSelectedProductDetails(product)}>
+                                                    <img 
+                                                        src={product.image} 
+                                                        alt={product.name} 
+                                                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                                        onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=60"; }} 
+                                                    />
+                                                    <span class="absolute top-2 left-2 bg-slate-900/80 backdrop-blur-md text-white text-[10px] sm:text-[11px] font-bold px-2 py-0.5 rounded-md">
+                                                        CODE: {product.code}
+                                                    </span>
+                                                    <span class={`absolute bottom-2 right-2 text-white text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur-md ${product.stock > 0 ? 'bg-emerald-600/90' : 'bg-rose-600/90'}`}>
+                                                        {product.stock > 0 ? `လက်ကျန်: ${product.stock}` : 'Stock ပြတ်ပါပြီ'}
+                                                    </span>
+                                                </div>
+
+                                                {/* Product Info */}
+                                                <div class="p-3 sm:p-4">
+                                                    <span class="text-[10px] font-bold text-emerald-600 uppercase">{product.category}</span>
+                                                    <h3 
+                                                        onClick={() => setSelectedProductDetails(product)}
+                                                        class="font-bold text-xs sm:text-sm text-slate-800 line-clamp-1 mt-0.5 cursor-pointer hover:text-emerald-700"
+                                                    >
+                                                        {product.name}
+                                                    </h3>
+                                                    
+                                                    <div class="flex items-center gap-1 my-2 flex-wrap text-[10px] text-slate-500">
+                                                        <span class="bg-slate-100 px-1.5 py-0.5 rounded font-medium">
+                                                            Size: {product.sizes.join(', ')}
+                                                        </span>
+                                                    </div>
+
+                                                    <p class="text-sm sm:text-base font-black text-emerald-700">
+                                                        {product.price.toLocaleString()} Ks
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            {/* Action Buttons */}
+                                            <div class="p-3 pt-0 grid grid-cols-2 gap-2">
+                                                <button 
+                                                    onClick={() => addToCart(product, product.sizes[0], product.colors[0])}
+                                                    class="w-full py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold rounded-xl flex items-center justify-center gap-1 transition-all"
+                                                >
+                                                    <i class="fa-solid fa-cart-plus"></i> ခြင်းထဲထည့်
+                                                </button>
+
+                                                <button 
+                                                    onClick={() => setSelectedProductDetails(product)}
+                                                    class="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1 transition-all"
+                                                >
+                                                    ကြည့်မည်
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {filteredProducts.length === 0 && (
+                                    <div class="bg-white rounded-3xl p-12 text-center text-slate-400 border border-slate-100">
+                                        <i class="fa-solid fa-shirt text-5xl mb-3 text-slate-200"></i>
+                                        <p class="text-slate-600 font-bold text-sm">ရှာဖွေထားသော အထည် သို့မဟုတ် Code မရှိသေးပါ</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {}
+                        {/* TAB 2: INVENTORY & EDIT (အထည်များ စစ်ဆေး/ပြင်ဆင်/ဖျက်ရန်) - Admin Only */}
+                        {activeTab === 'inventory' && role === 'admin' && (
+                            <div class="space-y-6">
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                                    <div>
+                                        <h2 class="text-xl font-bold text-slate-800">အထည်များ စီမံခန့်ခွဲမှု (Inventory Control)</h2>
+                                        <p class="text-xs text-slate-500">ရှိပြီးသား အထည်များ၏ ဈေးနှုန်း၊ လက်ကျန် Stock ကို ပြင်ဆင်ရန် သို့မဟုတ် ဖျက်ရန်</p>
+                                    </div>
+                                    <button 
+                                        onClick={() => setActiveTab('addProduct')} 
+                                        class="bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow transition-all flex items-center gap-2"
+                                    >
+                                        <i class="fa-solid fa-plus"></i> အထည်သစ် တင်မည်
+                                    </button>
+                                </div>
+
+                                <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr class="bg-slate-50 text-slate-500 text-xs font-bold border-b border-slate-100">
+                                                    <th class="p-4">အထည် / Code</th>
+                                                    <th class="p-4">အမျိုးအစား</th>
+                                                    <th class="p-4">ရောင်းဈေး / ရင်းဈေး</th>
+                                                    <th class="p-4">လက်ကျန် Stock</th>
+                                                    <th class="p-4 text-center">လုပ်ဆောင်ချက်</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-slate-100 text-xs">
+                                                {products.map(prod => (
+                                                    <tr key={prod.id} class="hover:bg-slate-50 transition-all">
+                                                        <td class="p-4 flex items-center gap-3">
+                                                            <img src={prod.image} alt={prod.name} class="w-12 h-12 object-cover rounded-xl" />
+                                                            <div>
+                                                                <span class="font-bold text-emerald-600">CODE: {prod.code}</span>
+                                                                <p class="font-bold text-slate-800 line-clamp-1">{prod.name}</p>
+                                                            </div>
+                                                        </td>
+                                                        <td class="p-4 text-slate-600 font-semibold">{prod.category}</td>
+                                                        <td class="p-4">
+                                                            <span class="font-bold text-slate-800">{prod.price.toLocaleString()} Ks</span>
+                                                            <div class="text-[10px] text-slate-400">ရင်းဈေး: {prod.costPrice.toLocaleString()} Ks</div>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <span class={`font-bold px-2 py-1 rounded-lg text-xs ${prod.stock > 5 ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-700'}`}>
+                                                                {prod.stock} ထည်
+                                                            </span>
+                                                        </td>
+                                                        <td class="p-4 text-center space-x-2">
+                                                            <button 
+                                                                onClick={() => setEditingProduct(prod)}
+                                                                class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold text-xs transition-all"
+                                                                title="ပြင်ဆင်မည်"
+                                                            >
+                                                                <i class="fa-solid fa-pen-to-square"></i> ပြင်မည်
+                                                            </button>
+                                                            <button 
+                                                                onClick={() => handleDeleteProduct(prod.id)}
+                                                                class="p-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg font-bold text-xs transition-all"
+                                                                title="ဖျက်မည်"
+                                                            >
+                                                                <i class="fa-solid fa-trash-can"></i> ဖျက်မည်
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {}
+                        {/* TAB 3: ADD NEW PRODUCT (အထည်သစ် စာရင်းသွင်းတင်ခြင်း) - Admin Only */}
+                        {activeTab === 'addProduct' && role === 'admin' && (
+                            <div class="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-100">
+                                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
+                                    <div class="p-3 bg-emerald-50 text-emerald-600 rounded-2xl">
+                                        <i class="fa-solid fa-shirt text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-slate-800">အထည်သစ် စာရင်းသွင်း တင်ခြင်း</h2>
+                                        <p class="text-xs text-slate-500">ဆိုင်တွင် ရောင်းချမည့် အထည်သစ်၏ အချက်အလက်များ ထည့်သွင်းပါ</p>
+                                    </div>
+                                </div>
+
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const formData = new FormData(e.target);
+                                    const newProd = {
+                                        id: `P-${Date.now()}`,
+                                        code: formData.get('code'),
+                                        name: formData.get('name'),
+                                        category: formData.get('category'),
+                                        price: Number(formData.get('price')),
+                                        costPrice: Number(formData.get('costPrice')),
+                                        stock: Number(formData.get('stock')),
+                                        sizes: formData.get('sizes').split(',').map(s => s.trim()),
+                                        colors: formData.get('colors').split(',').map(c => c.trim()),
+                                        image: formData.get('image') || 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&auto=format&fit=crop&q=60',
+                                        description: formData.get('description')
+                                    };
+
+                                    setProducts([newProd, ...products]);
+                                    showToast("အထည်သစ် အောင်မြင်စွာ တင်ပြီးပါပြီ!");
+                                    e.target.reset();
+                                    setActiveTab('shop');
+                                }} class="space-y-4">
+                                    
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">အထည် Code (SKU) *</label>
+                                            <input required name="code" type="text" placeholder="ဥပမာ- DR-005" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">အထည် အမျိုးအစား *</label>
+                                            <select name="category" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none">
+                                                <option value="ဂါဝန် (Dresses)">ဂါဝန် (Dresses)</option>
+                                                <option value="အင်္ကျီ (Shirts)">အင်္ကျီ (Shirts)</option>
+                                                <option value="ဘောင်းဘီ (Jeans)">ဘောင်းဘီ (Jeans)</option>
+                                                <option value="စကတ် (Skirts)">စကတ် (Skirts)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">အထည် အမည် *</label>
+                                        <input required name="name" type="text" placeholder="ဥပမာ- ကိုရီးယား ဖက်ရှင် ဂါဝန်" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none" />
+                                    </div>
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">ရောင်းဈေး (Ks) *</label>
+                                            <input required name="price" type="number" placeholder="25000" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">ရင်းဈေး (Ks) *</label>
+                                            <input required name="costPrice" type="number" placeholder="18000" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">လက်ကျန် အရေအတွက် *</label>
+                                            <input required name="stock" type="number" placeholder="10" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none" />
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">ဆိုဒ်များ (ကော်မာ ခံရေးပါ)</label>
+                                            <input name="sizes" type="text" defaultValue="S, M, L, XL" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none" />
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">အရောင်များ (ကော်မာ ခံရေးပါ)</label>
+                                            <input name="colors" type="text" defaultValue="အဖြူ, အနက်, ပန်းရောင်" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none" />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">ပုံ Link (Image URL)</label>
+                                        <input name="image" type="url" placeholder="https://..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">အထည် အသေးစိတ် အချက်အလက်</label>
+                                        <textarea name="description" rows="3" placeholder="အသားအမျိုးအစား၊ ဝတ်ဆင်ပုံ..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-emerald-400 outline-none"></textarea>
+                                    </div>
+
+                                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-2xl shadow-lg shadow-emerald-200 hover:from-emerald-700 transition-all flex items-center justify-center gap-2">
+                                        <i class="fa-solid fa-cloud-arrow-up"></i> အထည်သစ် တင်မည်
+                                    </button>
+                                </form>
+                            </div>
+                        )}
+
+                        {}
+                        {/* TAB 4: ORDERS MANAGEMENT (Admin Only) */}
+                        {activeTab === 'orders' && role === 'admin' && (
+                            <div class="space-y-6">
+                                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                                    <div>
+                                        <h2 class="text-xl font-bold text-slate-800">Order စီမံခန့်ခွဲမှု Dashboard</h2>
+                                        <p class="text-xs text-slate-500">ဝယ်ယူသူများ တင်ထားသော အော်ဒါများကို စစ်ဆေးပါ</p>
+                                    </div>
+                                    <span class="bg-emerald-100 text-emerald-800 font-bold px-3.5 py-1.5 rounded-full text-xs">
+                                        စုစုပေါင်း အော်ဒါ: {orders.length} ခု
+                                    </span>
+                                </div>
+
+                                <div class="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr class="bg-slate-50 text-slate-500 text-xs font-bold border-b border-slate-100">
+                                                    <th class="p-4">Order ID / ရက်စွဲ</th>
+                                                    <th class="p-4">ဝယ်သူ အချက်အလက်</th>
+                                                    <th class="p-4">မှာယူသော အထည်များ</th>
+                                                    <th class="p-4">ကျသင့်ငွေ</th>
+                                                    <th class="p-4">အခြေအနေ (Status)</th>
+                                                    <th class="p-4 text-center">လုပ်ဆောင်ချက်</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-slate-100 text-xs">
+                                                {orders.map(order => (
+                                                    <tr key={order.id} class="hover:bg-slate-50/80 transition-all">
+                                                        <td class="p-4">
+                                                            <span class="font-bold text-slate-800">{order.id}</span>
+                                                            <div class="text-[11px] text-slate-400 mt-0.5">{order.date}</div>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <p class="font-bold text-slate-800">{order.customerName}</p>
+                                                            <p class="text-slate-500">{order.phone}</p>
+                                                            <p class="text-[11px] text-slate-400 truncate max-w-xs">{order.address}</p>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <div class="space-y-1">
+                                                                {order.items.map((it, idx) => (
+                                                                    <div key={idx} class="flex items-center gap-2">
+                                                                        <span class="bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded text-[10px] font-bold">{it.code}</span>
+                                                                        <span class="font-medium text-slate-700">{it.name} ({it.size}) x {it.qty}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </td>
+                                                        <td class="p-4 font-bold text-slate-800">
+                                                            {order.totalAmount.toLocaleString()} Ks
+                                                            <div class="text-[10px] text-slate-400 font-normal">{order.paymentMethod}</div>
+                                                        </td>
+                                                        <td class="p-4">
+                                                            <select 
+                                                                value={order.status}
+                                                                onChange={(e) => {
+                                                                    const newStatus = e.target.value;
+                                                                    setOrders(orders.map(o => o.id === order.id ? { ...o, status: newStatus } : o));
+                                                                    showToast(`Order ${order.id} status ပြောင်းလဲပြီးပါပြီ`);
+                                                                }}
+                                                                class={`p-1.5 rounded-lg font-bold text-xs outline-none border cursor-pointer ${
+                                                                    order.status === 'Pending' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                                                                    order.status === 'Approved' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                                                                    order.status === 'Shipped' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                                                                    'bg-rose-50 text-rose-700 border-rose-200'
+                                                                }`}
+                                                            >
+                                                                <option value="Pending">Pending (စောင့်ဆိုင်းဆဲ)</option>
+                                                                <option value="Approved">Approved (အတည်ပြုပြီး)</option>
+                                                                <option value="Shipped">Shipped (ပို့ဆောင်ပြီး)</option>
+                                                                <option value="Cancelled">Cancelled (ပယ်ဖျက်)</option>
+                                                            </select>
+                                                        </td>
+                                                        <td class="p-4 text-center">
+                                                            <button 
+                                                                onClick={() => setSelectedVoucherOrder(order)}
+                                                                class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-bold text-xs flex items-center justify-center gap-1 mx-auto"
+                                                            >
+                                                                <i class="fa-solid fa-receipt"></i> ဘောင်ချာ
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {}
+                        {/* TAB 5: LEDGER & EXPENSES (Admin Only) */}
+                        {activeTab === 'ledger' && role === 'admin' && (
+                            <div class="space-y-6">
+                                {/* Summary Cards */}
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div class="bg-gradient-to-br from-emerald-600 to-teal-700 p-6 rounded-3xl text-white shadow-md">
+                                        <div class="flex justify-between items-center opacity-80 mb-2">
+                                            <span class="text-xs font-bold uppercase">စုစုပေါင်း ရောင်းရငွေ</span>
+                                            <i class="fa-solid fa-sack-dollar text-xl"></i>
+                                        </div>
+                                        <h3 class="text-2xl font-black">
+                                            {orders.filter(o => o.status !== 'Cancelled').reduce((a, b) => a + b.totalAmount, 0).toLocaleString()} Ks
+                                        </h3>
+                                    </div>
+
+                                    <div class="bg-gradient-to-br from-teal-700 to-slate-800 p-6 rounded-3xl text-white shadow-md">
+                                        <div class="flex justify-between items-center opacity-80 mb-2">
+                                            <span class="text-xs font-bold uppercase">စုစုပေါင်း ကုန်ကျစရိတ်</span>
+                                            <i class="fa-solid fa-file-invoice-dollar text-xl"></i>
+                                        </div>
+                                        <h3 class="text-2xl font-black">
+                                            {expenses.reduce((a, b) => a + b.amount, 0).toLocaleString()} Ks
+                                        </h3>
+                                    </div>
+
+                                    <div class="bg-gradient-to-br from-green-600 to-emerald-800 p-6 rounded-3xl text-white shadow-md">
+                                        <div class="flex justify-between items-center opacity-80 mb-2">
+                                            <span class="text-xs font-bold uppercase">အသားတင် အမြတ်/အရှုံး</span>
+                                            <i class="fa-solid fa-chart-line text-xl"></i>
+                                        </div>
+                                        <h3 class="text-2xl font-black">
+                                            {(
+                                                orders.filter(o => o.status !== 'Cancelled').reduce((a, b) => a + b.totalAmount, 0) -
+                                                expenses.reduce((a, b) => a + b.amount, 0)
+                                            ).toLocaleString()} Ks
+                                        </h3>
+                                    </div>
+                                </div>
+
+                                {/* Add Expense Form & Expenses Table */}
+                                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                    {/* Expense Form */}
+                                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
+                                        <h3 class="font-bold text-base text-slate-800 border-b border-slate-100 pb-3">
+                                            + ကုန်ကျစရိတ် သစ်ထည့်ရန်
+                                        </h3>
+                                        <form onSubmit={(e) => {
+                                            e.preventDefault();
+                                            const formData = new FormData(e.target);
+                                            const newExp = {
+                                                id: `EX-${Date.now()}`,
+                                                title: formData.get('title'),
+                                                amount: Number(formData.get('amount')),
+                                                category: formData.get('category'),
+                                                date: formData.get('date') || new Date().toISOString().split('T')[0]
+                                            };
+                                            setExpenses([newExp, ...expenses]);
+                                            showToast("ကုန်ကျစရိတ် စာရင်း ထည့်သွင်းပြီးပါပြီ!");
+                                            e.target.reset();
+                                        }} class="space-y-3">
+                                            <div>
+                                                <label class="block text-xs font-bold text-slate-700 mb-1">စရိတ် ခေါင်းစဉ် *</label>
+                                                <input required name="title" type="text" placeholder="ဥပမာ- ဆိုင်လခ၊ မီးဖိုး" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-400" />
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-bold text-slate-700 mb-1">ပမာဏ (Ks) *</label>
+                                                <input required name="amount" type="number" placeholder="50000" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-400" />
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-bold text-slate-700 mb-1">အမျိုးအစား</label>
+                                                <select name="category" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-400">
+                                                    <option value="ဆိုင်စရိတ်">ဆိုင်စရိတ်</option>
+                                                    <option value="ထုပ်ပိုးစရိတ်">ထုပ်ပိုးစရိတ်</option>
+                                                    <option value="ပို့ဆောင်စရိတ်">ပို့ဆောင်စရိတ်</option>
+                                                    <option value="အထွေထွေ">အထွေထွေ</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-bold text-slate-700 mb-1">ရက်စွဲ</label>
+                                                <input name="date" type="date" defaultValue={new Date().toISOString().split('T')[0]} class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-400" />
+                                            </div>
+                                            <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all">
+                                                စာရင်းသွင်းမည်
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                    {/* Expenses List Table */}
+                                    <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden p-6 space-y-4">
+                                        <h3 class="font-bold text-base text-slate-800 border-b border-slate-100 pb-3">
+                                            ကုန်ကျစရိတ် မှတ်တမ်းများ
+                                        </h3>
+                                        <div class="overflow-x-auto">
+                                            <table class="w-full text-left border-collapse text-xs">
+                                                <thead>
+                                                    <tr class="bg-slate-50 text-slate-500 font-bold border-b border-slate-100">
+                                                        <th class="p-3">ရက်စွဲ</th>
+                                                        <th class="p-3">အကြောင်းအရာ</th>
+                                                        <th class="p-3">အမျိုးအစား</th>
+                                                        <th class="p-3 text-right">ပမာဏ</th>
+                                                        <th class="p-3 text-center">ဖျက်ရန်</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-slate-100">
+                                                    {expenses.map(exp => (
+                                                        <tr key={exp.id} class="hover:bg-slate-50">
+                                                            <td class="p-3 text-slate-500">{exp.date}</td>
+                                                            <td class="p-3 font-bold text-slate-800">{exp.title}</td>
+                                                            <td class="p-3"><span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md text-[10px] font-bold">{exp.category}</span></td>
+                                                            <td class="p-3 text-right font-bold text-emerald-700">{exp.amount.toLocaleString()} Ks</td>
+                                                            <td class="p-3 text-center">
+                                                                <button 
+                                                                    onClick={() => {
+                                                                        if (window.confirm("ဤစရိတ်စာရင်းကို ဖျက်ရန် သေချာပါသလား?")) {
+                                                                            setExpenses(expenses.filter(e => e.id !== exp.id));
+                                                                            showToast("စရိတ်စာရင်း ဖျက်ပြီးပါပြီ", "error");
+                                                                        }
+                                                                    }}
+                                                                    class="text-rose-500 hover:text-rose-700"
+                                                                >
+                                                                    <i class="fa-solid fa-trash-can"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {}
+                        {/* TAB 6: SETTINGS (Messenger/Telegram Links & Admin PIN) - Admin Only */}
+                        {activeTab === 'settings' && role === 'admin' && (
+                            <div class="max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm space-y-6">
+                                <div class="border-b border-slate-100 pb-4">
+                                    <h2 class="text-xl font-bold text-slate-800">Messenger & Telegram ချိတ်ဆက်မှု အပြင်အဆင်</h2>
+                                    <p class="text-xs text-slate-500">ဝယ်သူများ တိုက်ရိုက်ဆက်သွယ်နိုင်မည့် ဆိုရှယ်မီဒီယာ Link များ ထည့်သွင်းပါ</p>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">ဆိုင်အမည် (Shop Name)</label>
+                                        <input 
+                                            type="text" 
+                                            value={socialLinks.shopName}
+                                            onChange={(e) => setSocialLinks({ ...socialLinks, shopName: e.target.value })}
+                                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-emerald-400"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">
+                                            <i class="fa-brands fa-facebook-messenger text-blue-500 mr-1"></i> Facebook Messenger Link
+                                        </label>
+                                        <input 
+                                            type="url" 
+                                            value={socialLinks.messenger}
+                                            onChange={(e) => setSocialLinks({ ...socialLinks, messenger: e.target.value })}
+                                            placeholder="https://m.me/yourpage"
+                                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-emerald-400"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">
+                                            <i class="fa-brands fa-telegram text-sky-500 mr-1"></i> Telegram Direct Link
+                                        </label>
+                                        <input 
+                                            type="url" 
+                                            value={socialLinks.telegram}
+                                            onChange={(e) => setSocialLinks({ ...socialLinks, telegram: e.target.value })}
+                                            placeholder="https://t.me/yourusername"
+                                            class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-emerald-400"
+                                        />
+                                    </div>
+
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">KBZ Pay ဖုန်းနံပါတ်</label>
+                                            <input 
+                                                type="text" 
+                                                value={socialLinks.kbzPay}
+                                                onChange={(e) => setSocialLinks({ ...socialLinks, kbzPay: e.target.value })}
+                                                class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-emerald-400"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-bold text-slate-700 mb-1">WavePay ဖုန်းနံပါတ်</label>
+                                            <input 
+                                                type="text" 
+                                                value={socialLinks.wavePay}
+                                                onChange={(e) => setSocialLinks({ ...socialLinks, wavePay: e.target.value })}
+                                                class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none focus:ring-2 focus:ring-emerald-400"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Admin PIN Settings */}
+                                    <div class="border-t border-slate-100 pt-4 mt-4">
+                                        <h3 class="font-bold text-xs text-slate-800 mb-2 flex items-center gap-1">
+                                            <i class="fa-solid fa-key text-amber-500"></i> Admin PIN လျှို့ဝှက်နံပါတ် ပြောင်းရန်
+                                        </h3>
+                                        <div class="flex gap-2 items-center">
+                                            <input 
+                                                type="password" 
+                                                placeholder="PIN အသစ် (ဥပမာ- 5678)"
+                                                id="newPinInput"
+                                                class="flex-grow p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none focus:ring-2 focus:ring-emerald-400"
+                                            />
+                                            <button 
+                                                onClick={() => {
+                                                    const input = document.getElementById('newPinInput').value;
+                                                    if (input && input.trim().length >= 4) {
+                                                        setAdminPin(input.trim());
+                                                        localStorage.setItem('fashion_admin_pin', input.trim());
+                                                        showToast("Admin PIN အောင်မြင်စွာ ပြောင်းလဲပြီးပါပြီ");
+                                                        document.getElementById('newPinInput').value = '';
+                                                    } else {
+                                                        showToast("PIN နံပါတ် အနည်းဆုံး ၄ လုံး ရှိရပါမည်", "error");
+                                                    }
+                                                }}
+                                                class="px-4 py-2 bg-slate-800 text-white rounded-xl font-bold text-xs hover:bg-slate-900 transition-all"
+                                            >
+                                                ပြောင်းမည်
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <button 
+                                        onClick={() => showToast("ပြင်ဆင်မှုများကို အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ")}
+                                        class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl shadow-md transition-all text-xs sm:text-sm"
+                                    >
+                                        သိမ်းဆည်းမည်
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+
+                    {}
+                    {/* MODAL 0: ADMIN PASSCODE LOGIN POPUP */}
+                    {showAdminLoginModal && (
+                        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in">
+                            <div class="bg-white max-w-sm w-full rounded-3xl p-6 shadow-2xl relative space-y-4 text-center">
+                                <button 
+                                    onClick={() => setShowAdminLoginModal(false)} 
+                                    class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"
+                                >
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+
+                                <div class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl mx-auto shadow-sm">
+                                    <i class="fa-solid fa-user-shield"></i>
+                                </div>
+
+                                <div>
+                                    <h3 class="font-bold text-base text-slate-800">Admin Mode သို့ ဝင်ရောက်ရန်</h3>
+                                    <p class="text-xs text-slate-500 mt-1">ဆိုင်ရှင်များသာ ဝင်ရောက်နိုင်သော လျှို့ဝှက် PIN နံပါတ် ထည့်ပါ။</p>
+                                    <p class="text-[11px] text-emerald-800 font-bold bg-emerald-50 px-2 py-1.5 rounded-lg mt-2.5">
+                                        (စတင်အသုံးပြုသူများအတွက် မူလ PIN : <code class="text-slate-900 bg-emerald-200 px-1.5 py-0.5 rounded font-black">1234</code>)
+                                    </p>
+                                </div>
+
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    if (pinInput === adminPin) {
+                                        setIsAdminAuthenticated(true);
+                                        setRole('admin');
+                                        setShowAdminLoginModal(false);
+                                        setPinError('');
+                                        showToast("Admin အဖြစ် အောင်မြင်စွာ ဝင်ရောက်ပြီးပါပြီ");
+                                    } else {
+                                        setPinError("လျှို့ဝှက်နံပါတ် (PIN) မှားယွင်းနေပါသည်။ မူလ PIN မှာ 1234 ဖြစ်ပါသည်။");
+                                    }
+                                }} class="space-y-3">
+                                    <div>
+                                        <input 
+                                            type="password" 
+                                            maxLength="10"
+                                            placeholder="PIN နံပါတ် ထည့်ပါ" 
+                                            value={pinInput}
+                                            onChange={(e) => setPinInput(e.target.value)}
+                                            class="w-full text-center tracking-widest text-lg font-bold p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-400 outline-none"
+                                            autoFocus
+                                        />
+                                        {pinError && (
+                                            <p class="text-rose-500 text-xs font-bold mt-1.5">{pinError}</p>
+                                        )}
+                                    </div>
+
+                                    <button 
+                                        type="submit" 
+                                        class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-2xl shadow-md hover:from-emerald-700 transition-all text-xs sm:text-sm"
+                                    >
+                                        <i class="fa-solid fa-key mr-1"></i> ဝင်ရောက်မည်
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* MODAL 1: PRODUCT DETAILS POPUP */}
+                    {selectedProductDetails && (
+                        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+                            <div class="bg-white max-w-lg w-full rounded-3xl p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+                                <button 
+                                    onClick={() => setSelectedProductDetails(null)} 
+                                    class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"
+                                >
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+
+                                <div class="flex flex-col sm:flex-row gap-4">
+                                    <img 
+                                        src={selectedProductDetails.image} 
+                                        alt={selectedProductDetails.name} 
+                                        class="w-full sm:w-48 h-56 object-cover rounded-2xl bg-slate-100"
+                                    />
+                                    <div class="flex-grow space-y-2">
+                                        <span class="bg-slate-900 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                                            CODE: {selectedProductDetails.code}
+                                        </span>
+                                        <h3 class="font-bold text-base text-slate-800">{selectedProductDetails.name}</h3>
+                                        <p class="text-emerald-700 font-black text-xl">{selectedProductDetails.price.toLocaleString()} Ks</p>
+                                        
+                                        <div class="text-xs text-slate-600">
+                                            <p class="font-bold mb-1">ရရှိနိုင်သော Size များ:</p>
+                                            <div class="flex gap-1 flex-wrap">
+                                                {selectedProductDetails.sizes.map(s => (
+                                                    <span key={s} class="bg-emerald-50 text-emerald-700 font-bold px-2 py-1 rounded-md">{s}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div class="text-xs text-slate-600">
+                                            <p class="font-bold mb-1">အရောင်များ:</p>
+                                            <div class="flex gap-1 flex-wrap">
+                                                {selectedProductDetails.colors.map(c => (
+                                                    <span key={c} class="bg-slate-100 text-slate-700 font-medium px-2 py-1 rounded-md">{c}</span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <p class="text-xs text-slate-500 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                                    {selectedProductDetails.description}
+                                </p>
+
+                                <div class="grid grid-cols-2 gap-3 pt-2">
+                                    <button 
+                                        onClick={() => {
+                                            addToCart(selectedProductDetails, selectedProductDetails.sizes[0], selectedProductDetails.colors[0]);
+                                            setSelectedProductDetails(null);
+                                        }}
+                                        class="py-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs rounded-2xl transition-all"
+                                    >
+                                        <i class="fa-solid fa-cart-plus"></i> ခြင်းထဲထည့်မည်
+                                    </button>
+
+                                    <a 
+                                        href={`${socialLinks.messenger}?text=မင်္ဂလာပါ၊ အထည် Code: ${selectedProductDetails.code} (${selectedProductDetails.name}) အား မှာယူလိုပါသည်...`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        class="py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold text-xs rounded-2xl flex items-center justify-center gap-1.5 transition-all shadow"
+                                    >
+                                        <i class="fa-brands fa-facebook-messenger"></i> Direct မှာမည်
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* CART DRAWER */}
+                    {isCartOpen && (
+                        <div class="fixed inset-0 z-50 flex justify-end bg-slate-900/40 backdrop-blur-sm">
+                            <div class="w-full max-w-md bg-white h-full shadow-2xl flex flex-col justify-between p-6 animate-in slide-in-from-right duration-200">
+                                <div>
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-4">
+                                        <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                                            <i class="fa-solid fa-bag-shopping text-emerald-600"></i> ဝယ်ယူမည့် အထည်များ
+                                        </h3>
+                                        <button onClick={() => setIsCartOpen(false)} class="p-2 text-slate-400 hover:text-slate-600">
+                                            <i class="fa-solid fa-xmark text-lg"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="space-y-3 max-h-[60vh] overflow-y-auto custom-scrollbar pr-1">
+                                        {cart.map(item => (
+                                            <div key={item.key} class="flex items-center gap-3 p-2 bg-slate-50 rounded-2xl border border-slate-100">
+                                                <img src={item.image} alt={item.name} class="w-14 h-14 object-cover rounded-xl" />
+                                                <div class="flex-grow">
+                                                    <span class="text-[10px] font-bold text-emerald-600">CODE: {item.code}</span>
+                                                    <h4 class="font-bold text-xs text-slate-800 line-clamp-1">{item.name}</h4>
+                                                    <p class="text-[10px] text-slate-500">Size: {item.size} | Color: {item.color}</p>
+                                                    <p class="font-bold text-xs text-slate-800 mt-0.5">{item.price.toLocaleString()} Ks</p>
+                                                </div>
+                                                <div class="flex flex-col items-center gap-1">
+                                                    <button onClick={() => updateCartQty(item.key, 1)} class="w-6 h-6 rounded-full bg-white shadow text-xs font-bold">+</button>
+                                                    <span class="text-xs font-bold">{item.qty}</span>
+                                                    <button onClick={() => updateCartQty(item.key, -1)} class="w-6 h-6 rounded-full bg-white shadow text-xs font-bold">-</button>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                        {cart.length === 0 && (
+                                            <div class="text-center py-12 text-slate-400">
+                                                <i class="fa-solid fa-basket-shopping text-4xl mb-2 text-slate-200"></i>
+                                                <p class="text-xs font-bold">ခြင်းထဲတွင် အထည်မရှိသေးပါ</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                {cart.length > 0 && (
+                                    <div class="border-t border-slate-100 pt-4 space-y-3">
+                                        <div class="flex justify-between items-center text-slate-800 font-extrabold text-base">
+                                            <span>စုစုပေါင်း:</span>
+                                            <span class="text-emerald-700">{cartTotal.toLocaleString()} Ks</span>
+                                        </div>
+
+                                        <button 
+                                            onClick={() => {
+                                                setIsCartOpen(false);
+                                                setCheckoutModalOpen(true);
+                                            }}
+                                            class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-2xl shadow-lg shadow-emerald-200 text-xs sm:text-sm flex items-center justify-center gap-2"
+                                        >
+                                            <i class="fa-solid fa-credit-card"></i> အော်ဒါ တင်မည်
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* CHECKOUT FORM MODAL */}
+                    {checkoutModalOpen && (
+                        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+                            <div class="bg-white max-w-md w-full rounded-3xl p-6 shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto custom-scrollbar">
+                                <button onClick={() => setCheckoutModalOpen(false)} class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                                    <i class="fa-solid fa-xmark text-lg"></i>
+                                </button>
+
+                                <h3 class="text-base font-bold text-slate-800 border-b border-slate-100 pb-3">
+                                    ဝယ်ယူသူ အချက်အလက် ဖြည့်သွင်းရန်
+                                </h3>
+
+                                <form onSubmit={(e) => {
+                                    e.preventDefault();
+                                    const formData = new FormData(e.target);
+                                    const newOrder = {
+                                        id: `ORD-${Math.floor(1000 + Math.random() * 9000)}`,
+                                        customerName: formData.get('name'),
+                                        phone: formData.get('phone'),
+                                        address: formData.get('address'),
+                                        paymentMethod: formData.get('paymentMethod'),
+                                        items: cart,
+                                        totalAmount: cartTotal,
+                                        status: 'Pending',
+                                        date: new Date().toLocaleString(),
+                                        note: formData.get('note')
+                                    };
+
+                                    setOrders([newOrder, ...orders]);
+                                    setCart([]);
+                                    setCheckoutModalOpen(false);
+                                    setOrderSuccessModal(newOrder);
+                                }} class="space-y-3">
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">အမည် *</label>
+                                        <input required name="name" type="text" placeholder="မိတ်ဆွေ အမည်" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">ဖုန်းနံပါတ် *</label>
+                                        <input required name="phone" type="tel" placeholder="09xxxxxxxxx" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">ပို့ဆောင်ရမည့် လိပ်စာ *</label>
+                                        <textarea required name="address" rows="2" placeholder="မြို့နယ်၊ လမ်း၊ အိမ်အမှတ်" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none"></textarea>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-bold text-slate-700 mb-1">ငွေပေးချေမှု နည်းလမ်း</label>
+                                        <select name="paymentMethod" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm outline-none">
+                                            <option value="KBZ Pay">KBZ Pay ({socialLinks.kbzPay})</option>
+                                            <option value="WavePay">WavePay ({socialLinks.wavePay})</option>
+                                            <option value="Cash on Delivery">အိမ်ရောက်ငွေချေ (COD)</option>
+                                        </select>
+                                    </div>
+
+                                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-2xl text-xs sm:text-sm shadow-md">
+                                        အော်ဒါ အတည်ပြု အပြီးသတ်မည် ({cartTotal.toLocaleString()} Ks)
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ORDER SUCCESS POPUP */}
+                    {orderSuccessModal && (
+                        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+                            <div class="bg-white max-w-sm w-full rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+                                <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-2xl mx-auto">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                                <h3 class="text-lg font-bold text-slate-800">အော်ဒါ တင်ခြင်း အောင်မြင်ပါသည်။</h3>
+                                <p class="text-xs text-slate-500">Order ID: <span class="font-bold text-slate-800">{orderSuccessModal.id}</span></p>
+
+                                <div class="bg-slate-50 p-3 rounded-2xl text-left text-xs space-y-1">
+                                    <p class="font-bold text-slate-700">မှာယူသူ: {orderSuccessModal.customerName}</p>
+                                    <p class="text-slate-500">ကျသင့်ငွေ: {orderSuccessModal.totalAmount.toLocaleString()} Ks</p>
+                                </div>
+
+                                <div class="space-y-2 pt-2">
+                                    <a 
+                                        href={`${socialLinks.messenger}?text=မင်္ဂလာပါ၊ Order ID: ${orderSuccessModal.id} ဖြင့် အထည်မှာယူထားပါသည်...`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        class="w-full py-2.5 bg-blue-500 hover:bg-blue-600 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2"
+                                    >
+                                        <i class="fa-brands fa-facebook-messenger"></i> Messenger သို့ စာပို့မည်
+                                    </a>
+
+                                    <button 
+                                        onClick={() => setOrderSuccessModal(null)}
+                                        class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl"
+                                    >
+                                        ပိတ်မည်
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* RECEIPT / VOUCHER PRINT MODAL */}
+                    {selectedVoucherOrder && (
+                        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
+                            <div class="bg-white max-w-md w-full rounded-3xl p-6 shadow-2xl space-y-4 relative">
+                                <button onClick={() => setSelectedVoucherOrder(null)} class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                                    <i class="fa-solid fa-xmark text-lg"></i>
+                                </button>
+
+                                <div class="text-center border-b border-dashed border-slate-200 pb-4">
+                                    <h3 class="font-bold text-base text-slate-800">{socialLinks.shopName}</h3>
+                                    <p class="text-xs text-slate-500">အရောင်း ဘောင်ချာ (Sales Voucher)</p>
+                                    <p class="text-[10px] text-slate-400 mt-1">Order ID: {selectedVoucherOrder.id} | {selectedVoucherOrder.date}</p>
+                                </div>
+
+                                <div class="text-xs space-y-1">
+                                    <p><span class="font-bold">ဝယ်သူ:</span> {selectedVoucherOrder.customerName}</p>
+                                    <p><span class="font-bold">ဖုန်း:</span> {selectedVoucherOrder.phone}</p>
+                                    <p><span class="font-bold">လိပ်စာ:</span> {selectedVoucherOrder.address}</p>
+                                </div>
+
+                                <table class="w-full text-left text-xs border-y border-slate-200 my-2 divide-y divide-slate-100">
+                                    <thead>
+                                        <tr class="text-slate-500 py-1">
+                                            <th class="py-1">အထည်/Code</th>
+                                            <th class="text-center">အရေအတွက်</th>
+                                            <th class="text-right">ကျသင့်ငွေ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {selectedVoucherOrder.items.map((it, idx) => (
+                                            <tr key={idx}>
+                                                <td class="py-1.5">{it.name} ({it.code})</td>
+                                                <td class="text-center">{it.qty}</td>
+                                                <td class="text-right">{(it.price * it.qty).toLocaleString()} Ks</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+
+                                <div class="flex justify-between items-center font-bold text-sm text-slate-800 pt-1">
+                                    <span>စုစုပေါင်း ကျသင့်ငွေ:</span>
+                                    <span class="text-emerald-700">{selectedVoucherOrder.totalAmount.toLocaleString()} Ks</span>
+                                </div>
+
+                                <button 
+                                    onClick={() => window.print()}
+                                    class="w-full py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2"
+                                >
+                                    <i class="fa-solid fa-print"></i> ဘောင်ချာ Print ထုတ်မည်
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
+```
