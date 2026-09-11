@@ -497,8 +497,7 @@ window.app = {
       this.showToast('အထည်အချက်အလက် ပြင်ဆင်ပြီးပါပြီ');
     } else {
       this.state.products.unshift(updatedProd);
-      this.showToast('အထည်သစ် အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ');
-        }
+      this.showToast('အထည်သစ် အောင်မြင်စွာ သိမ်းဆည်းပြီးပါပြီ');  }
 
   this.saveState();
   this.state.editingProduct = null;
@@ -1409,7 +1408,7 @@ renderOrders() {
     const totalExpense = expenses.reduce((n, e) => n + Number(e.amount || 0), 0);
     const netProfit = (revenue - cogs) - totalExpense;
 
-    const stat = (label, value, icon, color) => `
+    const stat = (label, value, icon, color) => \`
       <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-4">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl ${color} flex items-center justify-center text-lg">
